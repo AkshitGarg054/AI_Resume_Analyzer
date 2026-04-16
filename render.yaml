@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ai-resume-backend
+    env: docker
+    dockerContext: .
+    dockerfilePath: ./Backend/Dockerfile
+    # Render recommends explicitly declaring memory for Puppeteer apps
+    plan: free
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      # Define your other essential environments here or in the Render Dashboard
+      # - key: MONGO_URI
+      #   sync: false
+      # - key: JWT_SECRET
+      #   sync: false
+      # - key: GOOGLE_GENAI_API_KEY
+      #   sync: false
+      # - key: FRONTEND_URL
+      #   sync: false
