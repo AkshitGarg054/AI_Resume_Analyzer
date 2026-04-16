@@ -1,0 +1,141 @@
+// ── App Layout Shell ──────────────────────────────────────────────────────────
+$bg-page:       #0d1117;
+$bg-nav:        #0d1117;
+$bg-nav-border: #2a3348;
+$text-primary:  #e6edf3;
+$text-muted:    #7d8590;
+$accent:        #ff2d78;
+$font-stack:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: $bg-page;
+    font-family: $font-stack;
+}
+
+// ── Top Navbar ────────────────────────────────────────────────────────────────
+.app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    background-color: $bg-nav;
+    border-bottom: 1px solid $bg-nav-border;
+    flex-shrink: 0;
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+
+        &-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: $text-primary;
+            letter-spacing: -0.03em;
+
+            span {
+                color: $accent;
+            }
+        }
+    }
+
+    &__tabs {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        background-color: rgba(#fff, 0.04);
+        border: 1px solid $bg-nav-border;
+        border-radius: 0.6rem;
+        padding: 0.25rem;
+    }
+
+    &__tab {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.4rem 1rem;
+        border-radius: 0.4rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: $text-muted;
+        text-decoration: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: $font-stack;
+        transition: color 0.15s, background-color 0.15s;
+
+        svg {
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+
+        &:hover {
+            color: $text-primary;
+            background-color: rgba(#fff, 0.05);
+
+            svg {
+                opacity: 1;
+            }
+        }
+
+        &--active {
+            color: $accent;
+            background-color: rgba($accent, 0.1);
+            font-weight: 600;
+
+            svg {
+                opacity: 1;
+            }
+
+            &:hover {
+                background-color: rgba($accent, 0.12);
+                color: $accent;
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    &__logout {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.9rem;
+        border: 1px solid $bg-nav-border;
+        border-radius: 0.4rem;
+        background: none;
+        color: $text-muted;
+        font-size: 0.82rem;
+        font-weight: 500;
+        font-family: $font-stack;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+
+        &:hover {
+            color: $text-primary;
+            border-color: $text-muted;
+            background-color: rgba(#fff, 0.04);
+        }
+    }
+}
+
+// ── Page Content Outlet ───────────────────────────────────────────────────────
+.app-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
