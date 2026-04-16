@@ -2,7 +2,7 @@ services:
   # ─── Backend (Docker + Puppeteer) ────────────────────────────────
   - type: web
     name: ai-resume-backend
-    env: docker
+    runtime: docker
     dockerContext: .
     dockerfilePath: ./Backend/Dockerfile
     plan: free
@@ -11,11 +11,11 @@ services:
         value: 3000
       - key: NODE_ENV
         value: production
+      # fromService cannot reference a static site (no internal host).
+      # Set FRONTEND_URL manually in the Render dashboard after the
+      # frontend is deployed, e.g. https://ai-resume-frontend.onrender.com
       - key: FRONTEND_URL
-        fromService:
-          type: web          # In the YAML, use 'web' even for static sites
-          name: ai-resume-frontend
-          property: url
+        sync: false
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
@@ -24,19 +24,21 @@ services:
         sync: false
 
   # ─── Frontend (Vite / React Static Site) ─────────────────────────
-  - type: web                
+  - type: web
     name: ai-resume-frontend
-    env: static              # This 'env' tells Render it's a Static Site
+    runtime: static
     rootDir: Frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
     envVars:
+      # fromService with property: host works only for web/private services.
+      # Use it here to pull the backend's internal hostname.
       - key: VITE_API_URL
         fromService:
           type: web
           name: ai-resume-backend
-          property: url
+          property: host
