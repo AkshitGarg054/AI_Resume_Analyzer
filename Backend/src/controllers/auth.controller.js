@@ -3,6 +3,15 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
+// Cross-origin cookie options: SameSite=None + Secure is required when the
+// frontend and backend are on different subdomains (e.g. on Render).
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
+}
+
 /**
  * @name registerUserController
  * @description register a new user, expects username, email and password in the request body
@@ -44,7 +53,7 @@ async function registerUserController(req, res) {
             { expiresIn: "1d" }
         )
 
-        res.cookie("token", token)
+        res.cookie("token", token, cookieOptions)
 
         res.status(201).json({
             success: true,
@@ -105,7 +114,7 @@ async function loginUserController(req, res) {
             { expiresIn: "1d" }
         )
 
-        res.cookie("token", token)
+        res.cookie("token", token, cookieOptions)
         res.status(200).json({
             success: true,
             message: "User logged in successfully.",
@@ -138,7 +147,7 @@ async function logoutUserController(req, res) {
             await tokenBlacklistModel.create({ token })
         }
 
-        res.clearCookie("token")
+        res.clearCookie("token", cookieOptions)
 
         res.status(200).json({
             success: true,
@@ -147,7 +156,7 @@ async function logoutUserController(req, res) {
     } catch (error) {
         console.error("logoutUserController error:", error)
         // Still clear the cookie even if blacklist write fails
-        res.clearCookie("token")
+        res.clearCookie("token", cookieOptions)
         res.status(200).json({
             success: true,
             message: "User logged out successfully"
