@@ -13,7 +13,7 @@ services:
         value: production
       - key: FRONTEND_URL
         fromService:
-          type: static      # Changed from static_site to static
+          type: web          # In the YAML, use 'web' even for static sites
           name: ai-resume-frontend
           property: url
       - key: MONGO_URI
@@ -24,9 +24,9 @@ services:
         sync: false
 
   # ─── Frontend (Vite / React Static Site) ─────────────────────────
-  - type: static            # Changed from static_site to static
+  - type: web                
     name: ai-resume-frontend
-    env: static
+    env: static              # This 'env' tells Render it's a Static Site
     rootDir: Frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
