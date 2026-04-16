@@ -13,9 +13,9 @@ services:
         value: production
       - key: FRONTEND_URL
         fromService:
-          type: web
+          type: static_site  # Corrected type for static sites
           name: ai-resume-frontend
-          property: host
+          property: url      # Use 'url' for public browser access
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
@@ -24,7 +24,7 @@ services:
         sync: false
 
   # ─── Frontend (Vite / React Static Site) ─────────────────────────
-  - type: web
+  - type: static_site        # Corrected type from 'web' to 'static_site'
     name: ai-resume-frontend
     env: static
     rootDir: Frontend
@@ -39,4 +39,4 @@ services:
         fromService:
           type: web
           name: ai-resume-backend
-          property: host
+          property: url      # Use 'url' so the browser knows where to send requests
