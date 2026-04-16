@@ -1,22 +1,42 @@
 services:
+  # ─── Backend (Docker + Puppeteer) ────────────────────────────────
   - type: web
     name: ai-resume-backend
     env: docker
     dockerContext: .
     dockerfilePath: ./Backend/Dockerfile
-    # Render recommends explicitly declaring memory for Puppeteer apps
     plan: free
     envVars:
       - key: PORT
         value: 3000
       - key: NODE_ENV
         value: production
-      # Define your other essential environments here or in the Render Dashboard
-      # - key: MONGO_URI
-      #   sync: false
-      # - key: JWT_SECRET
-      #   sync: false
-      # - key: GOOGLE_GENAI_API_KEY
-      #   sync: false
-      # - key: FRONTEND_URL
-      #   sync: false
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: ai-resume-frontend
+          property: host
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GOOGLE_GENAI_API_KEY
+        sync: false
+
+  # ─── Frontend (Vite / React Static Site) ─────────────────────────
+  - type: web
+    name: ai-resume-frontend
+    env: static
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ai-resume-backend
+          property: host
