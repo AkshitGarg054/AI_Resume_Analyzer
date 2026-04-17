@@ -1,0 +1,51 @@
+# ── Environment variables (NEVER commit secrets) ──────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ── Node ──────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# ── Build / dist outputs ──────────────────────────────────────
+dist/
+dist-ssr/
+build/
+
+# ── Vite / React (Frontend) ───────────────────────────────────
+*.local
+
+# ── OS artefacts ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor directories ────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Puppeteer / Chromium cache ────────────────────────────────
+.cache/
+.local-chromium/
+
+# ── Docker ────────────────────────────────────────────────────
+*.dockerignore
+
+# ── Misc ──────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.tgz
+*.zip
